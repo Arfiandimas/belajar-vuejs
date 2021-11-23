@@ -1,17 +1,76 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="container">
+      <h1 class="mb-4">Daftar Pelanggan</h1>
+      <hr>
+        <CustomerTable 
+          v-bind:customers='customers'
+          @edit-customer='editCustomer'
+          @delete-customer='deleteCustomer'
+        />
+
+        <CustomerForm 
+          v-on:add-customer="addCustomer"
+        />
+
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import CustomerTable from './components/CustomerTable.vue'
+import CustomerForm from './components/CustomerForm.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    CustomerTable,
+    CustomerForm
+  },
+  data() {
+    return {
+      customers: [
+        {
+          id: 1,
+          name: 'Bambang',
+          email: 'bambang@mail.com',
+          address: 'Jl.Kenanga',
+        },
+        {
+          id: 2,
+          name: 'Dika',
+          email: 'dika@mail.com',
+          address: 'Jl.Mangga',
+        },
+        {
+          id: 3,
+          name: 'Agus',
+          email: 'agus@mail.com',
+          address: 'Jl.Mataram',
+        },
+        {
+          id: 4,
+          name: 'Barjono',
+          email: 'barjono@mail.com',
+          address: 'Jl.Mataram',
+        }
+      ]
+    }
+  },
+  methods: {
+    addCustomer(customer) {
+      this.customers.push(customer)
+    },
+    editCustomer(id, data) {
+      this.customers = this.customers.map(function (customer) {
+        return customer.id === id ? data : customer
+      })
+    },
+    deleteCustomer(id) {
+      this.customers = this.customers.filter(function (customer) {
+        return customer.id !== id
+      })
+    }
   }
 }
 </script>
